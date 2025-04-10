@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Bookstore{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Basic Reset & Body */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            line-height: 1.6;
+            background-color: #f8f9fa; /* Light background */
+            color: #333;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1100px;
+            margin: 20px auto; /* Center container */
+            padding: 25px;
+            background-color: #ffffff; /* White content background */
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Navigation Bar */
+        nav.navbar {
+            background-color: #343a40; /* Dark background */
+            color: #fff;
+            padding: 1rem 2rem;
+            margin-bottom: 30px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar .brand a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .navbar .nav-links a {
+            color: #adb5bd; /* Lighter text for links */
+            text-decoration: none;
+            margin-left: 20px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .navbar .nav-links a:hover {
+            color: #fff;
+            background-color: #495057;
+        }
+
+        .navbar .auth-links span {
+             margin-right: 15px;
+             color: #e9ecef;
+        }
+
+        .navbar .auth-links form {
+            display: inline;
+        }
+
+        .navbar .auth-links button,
+        .navbar .auth-links a.login-link {
+            background: none;
+            border: 1px solid #dc3545; /* Red border */
+            color: #dc3545; /* Red text */
+            padding: 6px 12px;
+            font: inherit;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-left: 10px;
+            text-decoration: none;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+         .navbar .auth-links a.login-link {
+            border-color: #0d6efd; /* Blue border for login */
+            color: #0d6efd;      /* Blue text for login */
+         }
+
+        .navbar .auth-links button:hover {
+            background-color: #dc3545;
+            color: #fff;
+        }
+        .navbar .auth-links a.login-link:hover {
+             background-color: #0d6efd;
+             color: #fff;
+        }
+
+
+        /* Headings */
+        h2 {
+            color: #007bff; /* Primary color */
+            margin-bottom: 20px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        h3 {
+             color: #495057; /* Darker gray */
+             margin-top: 0;
+             margin-bottom: 10px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 1rem;
+            text-align: center;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+        }
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background-color: #0d6efd; /* Blue */
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #0b5ed7;
+        }
+
+        .btn-success {
+            background-color: #198754; /* Green */
+            color: white;
+        }
+        .btn-success:hover {
+            background-color: #157347;
+        }
+
+        .btn-danger {
+            background-color: #dc3545; /* Red */
+            color: white;
+        }
+        .btn-danger:hover {
+            background-color: #bb2d3b;
+        }
+        .btn-danger-outline { /* For remove links */
+             background-color: transparent;
+             color: #dc3545;
+             border: 1px solid #dc3545;
+             padding: 5px 10px;
+             font-size: 0.9rem;
+        }
+        .btn-danger-outline:hover{
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+
+        .btn-secondary {
+            background-color: #6c757d; /* Gray */
+            color: white;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        /* Book Listing */
+        .book-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid */
+            gap: 25px;
+        }
+
+        .book-card {
+            border: 1px solid #e9ecef;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column; /* Stack items vertically */
+            justify-content: space-between; /* Push button to bottom */
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .book-card p {
+            margin-bottom: 10px;
+            color: #6c757d; /* Gray text */
+            font-size: 0.95rem;
+        }
+        .book-card p strong {
+             color: #495057; /* Darker gray for labels */
+        }
+        .book-card .price {
+            font-weight: bold;
+            color: #007bff; /* Blue price */
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+        .book-card .add-to-cart-btn {
+             margin-top: auto; /* Push button to bottom */
+             width: 100%; /* Make button full width of card */
+        }
+
+
+        /* Cart Table */
+        .cart-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+        .cart-table th, .cart-table td {
+            border: 1px solid #dee2e6;
+            padding: 12px;
+            text-align: left;
+            vertical-align: middle;
+        }
+        .cart-table thead th {
+            background-color: #e9ecef; /* Light gray header */
+            font-weight: bold;
+            color: #495057;
+        }
+        .cart-table tbody tr:nth-child(even) {
+            background-color: #f8f9fa; /* Zebra striping */
+        }
+        .cart-table td.actions {
+            text-align: center;
+        }
+
+
+        /* Cart Total */
+        .cart-total {
+            text-align: right;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .cart-total span {
+             color: #007bff;
+        }
+
+        /* Back Link */
+        .back-link {
+            margin-top: 20px;
+        }
+
+        /* Login Form */
+        .login-form {
+            max-width: 450px;
+            margin: 30px auto;
+            padding: 30px;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+        }
+        .login-form h2 {
+            text-align: center;
+            border-bottom: none;
+        }
+
+        .login-form form p {
+            margin-bottom: 15px;
+        }
+        .login-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #495057;
+        }
+        .login-form input[type="text"],
+        .login-form input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        /* Style form errors if they appear */
+         .login-form ul.errorlist {
+            list-style: none;
+            padding: 10px;
+            margin-bottom: 15px;
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            border-radius: 4px;
+        }
+        .login-form button[type="submit"] {
+             width: 100%;
+             padding: 12px;
+        }
+
+        /* Messages Framework */
+        .messages {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+        .messages li {
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid transparent;
+        }
+        .messages li.success {
+            background-color: #d1e7dd;
+            border-color: #badbcc;
+            color: #0f5132;
+        }
+        .messages li.error {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #842029;
+        }
+         .messages li.warning {
+            background-color: #fff3cd;
+            border-color: #ffecb5;
+            color: #664d03;
+        }
+         .messages li.info {
+            background-color: #cff4fc;
+            border-color: #b6effb;
+            color: #055160;
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="brand">
+             <a href="{% url 'book_list' %}">Bookstore</a>
+        </div>
+        <div class="nav-links">
+            <a href="{% url 'book_list' %}">Books</a>
+            <a href="{% url 'view_cart' %}">View Cart</a>
+        </div>
+        <div class="auth-links">
+            {% if user.is_authenticated %}
+                <span>Welcome, {{ user.username }}!</span>
+                <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit">Logout</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}" class="login-link">Login</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="container">
+         {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+    </div>
+
+</body>
+</html>

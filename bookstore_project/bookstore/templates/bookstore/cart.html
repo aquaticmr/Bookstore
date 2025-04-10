@@ -1,0 +1,41 @@
+{% extends "bookstore/base.html" %}
+
+{% block title %}Your Shopping Cart{% endblock %}
+
+{% block content %}
+<h2>Your Shopping Cart</h2>
+
+{% if cart_items %}
+    <table class="cart-table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Item Total</th>
+                <th style="text-align: center;">Action</th> {# Align header #}
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart_items %}
+            <tr>
+                <td>{{ item.book.title }}</td>
+                <td>{{ item.book.author }}</td>
+                <td>${{ item.book.price }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>${{ item.item_total|floatformat:2 }}</td>
+                <td class="actions"> {# Align content #}
+                     <a href="{% url 'remove_from_cart' item.book.id %}" class="btn btn-danger-outline btn-sm">Remove</a> {# Button class #}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p class="cart-total">Total: <span>${{ total_price|floatformat:2 }}</span></p>
+{% else %}
+    <p>Your cart is empty.</p>
+{% endif %}
+
+<a href="{% url 'book_list' %}" class="btn btn-secondary back-link">← Back to Books</a> {# Button class #}
+{% endblock %}

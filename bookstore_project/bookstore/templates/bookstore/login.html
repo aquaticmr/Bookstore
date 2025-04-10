@@ -1,0 +1,45 @@
+{% extends "bookstore/base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="login-form"> {# Form container #}
+    <h2>Login</h2>
+
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+
+        {# Render form errors at the top if they exist #}
+        {% if form.non_field_errors %}
+            <ul class="errorlist">
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {# Render fields manually or use form.as_p within the form #}
+        {% for field in form %}
+            <p>
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.help_text %}
+                  <small style="color: grey">{{ field.help_text }}</small>
+                {% endif %}
+                {% for error in field.errors %}
+                  <p style="color: red; font-size:0.9em;">{{ error }}</p>
+                {% endfor %}
+            </p>
+        {% endfor %}
+
+        {# Handle the 'next' parameter #}
+        {% if next %}
+            <input type="hidden" name="next" value="{{ next }}">
+        {% else %}
+             <input type="hidden" name="next" value="{% url 'book_list' %}"> {# Default redirect #}
+        {% endif %}
+
+        <button type="submit" class="btn btn-primary">Login</button> {# Button class #}
+    </form>
+</div>
+{% endblock %}

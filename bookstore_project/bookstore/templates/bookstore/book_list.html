@@ -1,0 +1,28 @@
+{% extends "bookstore/base.html" %}
+
+{% block title %}Available Books{% endblock %}
+
+{% block content %}
+<h2>Available Books</h2>
+
+{% if books %}
+    <div class="book-list"> {# Grid container #}
+        {% for book in books %}
+        <div class="book-card"> {# Individual book card #}
+            <div> {# Content wrapper #}
+                <h3>{{ book.title }}</h3>
+                <p><strong>Author:</strong> {{ book.author }}</p>
+                <p class="price"><strong>Price:</strong> ${{ book.price }}</p>
+                {# Remove the "no" line if it was here #}
+                {% if book.description %}
+                    <p>{{ book.description|truncatewords:20 }}</p> {# Optional: Truncate long descriptions #}
+                {% endif %}
+            </div>
+             <a href="{% url 'add_to_cart' book.id %}" class="btn btn-success add-to-cart-btn">Add to Cart</a> {# Button class #}
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No books available at the moment.</p>
+{% endif %}
+{% endblock %}
